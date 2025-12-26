@@ -6,15 +6,18 @@ When contact sensors are closed, and motion is detected, it will trigger a `pres
 State behavior is as follows:
 ```mermaid
 stateDiagram-v2
-  [*] --> Presence
-  state Presence {
-    [*] --> absence
-    absence --> presence: motion
-    absence --> unknown_open: no contact
-    presence --> unknown_open: no contact
-    unknown_open --> unknown_closed: contact
-    unknown_closed --> absence: absence timeout
-    unknown_closed --> presence: motion
+  [*] --> Open
+  Open --> Closed: contact
+  Closed --> Open: no contact
+  state Open {
+    [*] --> motion_o
+    motion_o --> no_motion: motion timeout
+    no_motion --> motion_o: motion
+  }
+  state Closed {
+    [*] --> motion_c
+    motion_c --> absence: motion timeout
+    motion_c --> presence: motion
   }
 ```
 ## Output
@@ -29,4 +32,4 @@ Output payload looks like this:
     }
 }
 ```
-The `presence` and `absence` states correspond with their respective states in the diagram above. In `unknown_open` and `unknown_closed` states it will output either `motion` or `no motion` state depending on the motion sensors input and contact sensor state changes.
+The `presence` and `absence` states correspond with their respective states in the diagram above. `motion_c` and `motion_o` states will be presented as `motion` to the outside, but are actually different states.
