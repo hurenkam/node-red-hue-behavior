@@ -1,9 +1,9 @@
 class BaseState {
     #info;
-    _context;
+    #context;
     
     constructor(context) {
-        this._context = context;
+        this.#context = context;
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('BaseState');
         this.#info("constructor()");
         if (!context) {
@@ -11,7 +11,7 @@ class BaseState {
         }
     }
 
-    name() { return "BaseState"; }
+    context() { return this.#context; }
 
     transition(event) {
         this.#info("transition()");

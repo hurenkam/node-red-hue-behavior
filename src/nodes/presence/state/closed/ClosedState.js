@@ -16,12 +16,12 @@ class ClosedState extends BaseState {
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this._context,",",msg,")");
+        instance.#info("transition(",this.context(),",",msg,")");
         if (msg.payload && msg.payload.type) {
             if (msg.payload.type=="contact") {
                 if (msg.payload.contact_report.state=="no_contact") {
                     var open = { OpenState: require("../open/OpenState") };
-                    return new open.OpenState(this._context);
+                    return new open.OpenState(this.context());
                 }
             }
         }

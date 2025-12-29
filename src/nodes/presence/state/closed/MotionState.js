@@ -15,23 +15,23 @@ class MotionState extends BaseState {
     }
 
     exit() {
-        this._context.absence_timer().cancel();
+        this.context().absence_timer().cancel();
     }
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this._context,",",msg,")");
+        instance.#info("transition(",this.context(),",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 var closed = { PresenceState: require("./PresenceState") };
-                return new closed.PresenceState(instance._context);
+                return new closed.PresenceState(instance.context());
             }
         }
 
         if (msg.payload.type=="timeout") {
             if (msg.payload.timeout=="absence") {
                 var closed = { AbsenceState: require("./AbsenceState") };
-                return new closed.AbsenceState(instance._context);
+                return new closed.AbsenceState(instance.context());
             }
         }
         return instance;

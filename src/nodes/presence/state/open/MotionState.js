@@ -13,26 +13,26 @@ class MotionState extends BaseState {
 
     enter() {
         this.#info("enter()");
-        this._context.motion_timer().start();
+        this.context().motion_timer().start();
     }
 
-    exit(context) {
+    exit() {
         this.#info("exit()");
-        this._context.motion_timer().cancel();
+        this.context().motion_timer().cancel();
     }
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this._context,",",msg,")");
+        instance.#info("transition(",this.context(),",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
-                instance._context.motion_timer().start();
+                instance.context().motion_timer().start();
             }
         }
         if (msg.payload.type=="timeout") {
             if (msg.payload.timeout=="motion") {
                 var open = { NoMotionState: require("./NoMotionState") };
-                return new open.NoMotionState(instance._context);
+                return new open.NoMotionState(instance.context());
             }
         }
 

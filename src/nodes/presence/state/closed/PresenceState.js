@@ -12,7 +12,7 @@ class PresenceState extends BaseState {
     }
 
     transition(msg) {
-        this.#info("transition(",this._context,",",msg,")");
+        this.#info("transition(",this.context(),",",msg,")");
         return this;
     }
 }

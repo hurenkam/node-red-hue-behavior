@@ -13,12 +13,12 @@ class AbsenceState extends BaseState {
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this._context,",",msg,")");
+        instance.#info("transition(",this.context(),",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
 
                 var closed = { PresenceState: require("./PresenceState") };
-                return new closed.PresenceState(instance._context);
+                return new closed.PresenceState(instance.context());
             }
         }
 

@@ -13,11 +13,11 @@ class NoMotionState extends BaseState {
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this._context,",",msg,")");
+        instance.#info("transition(",this.context(),",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 var open = { MotionState: require("./MotionState") };
-                return new open.MotionState(instance._context);
+                return new open.MotionState(instance.context());
             }
         }
         return instance;
