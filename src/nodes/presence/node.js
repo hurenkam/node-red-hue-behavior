@@ -15,10 +15,6 @@ class PresenceNode {
         this.#api = api;
     }
 
-    node() { return this.#node; }
-    config() { return this.#config; }
-    api() { return this.#api; }
-
     #fsm;
     #motion_timer;
     #absence_timer;
@@ -26,18 +22,18 @@ class PresenceNode {
         this.#info("init()");
 
         var instance = this;
-        var utils = { Timer: require("../../utils/fsm/Timer") }
+        var utils = { Timer: require("../../utils/Timer") }
         var fsm = { StateMachine: require("../../utils/fsm/StateMachine") };
         var open = { OpenState: require("./state/open/OpenState") };
 
         this.#motion_timer = new utils.Timer(300000,() => { 
-            instance.#fsm.transition(instance,motion_timout_msg); 
+            instance.#fsm.transition(motion_timout_msg); 
         });
         this.#absence_timer = new utils.Timer(60000,() => { 
-            instance.#fsm.transition(instance,absence_timeout_msg); 
+            instance.#fsm.transition(absence_timeout_msg); 
         });
         this.#node.on('input', function (msg) {
-            instance.#input(msg,instance);
+            instance.#input(msg);
         });
         this.#node.on('close', function () {
             instance.#close();
@@ -46,6 +42,9 @@ class PresenceNode {
         this.#fsm = new fsm.StateMachine(new open.OpenState(instance));
     }
 
+    node() { return this.#node; }
+    config() { return this.#config; }
+    api() { return this.#api; }
     motion_timer() { return this.#motion_timer; }
     absence_timer() { return this.#absence_timer; }
 
@@ -53,9 +52,9 @@ class PresenceNode {
         this.#info("close()");
     }
 
-    #input(msg,instance) {
+    #input(msg) {
         this.#info("input(",msg,")");
-        this.#fsm.transition(instance,msg);
+        this.#fsm.transition(msg);
     }
 }
 

@@ -11,16 +11,14 @@ class AbsenceState extends BaseState {
         context.node().status({fill: "grey", shape: "dot", text: "absence"});
     }
 
-    transition(context,msg) {
-        this.#info("transition() "+context);
-        if (!context) {
-            throw new Error("Context is not set!");
-        }
+    transition(msg) {
+        var instance = this;
+        instance.#info("transition(",this._context,",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
 
                 var closed = { PresenceState: require("./PresenceState") };
-                return new closed.PresenceState(context);
+                return new closed.PresenceState(instance._context);
             }
         }
 

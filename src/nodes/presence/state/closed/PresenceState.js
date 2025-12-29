@@ -11,7 +11,8 @@ class PresenceState extends BaseState {
         context.node().status({fill: "green", shape: "dot", text: "presence"});
     }
 
-    transition(context,msg) {
+    transition(msg) {
+        this.#info("transition(",this._context,",",msg,")");
         return this;
     }
 }

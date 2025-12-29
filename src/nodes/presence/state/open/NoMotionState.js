@@ -6,21 +6,18 @@ class NoMotionState extends BaseState {
     constructor(context) {
         super(context);
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('open').extend('NoMotionState');
-        this.#info("constructor() context: "+context);
+        this.#info("constructor()");
         context.node().send({ "payload": { "state_report": { "state": "no_motion" }, "type": "state" } })
         context.node().status({fill: "blue", shape: "dot", text: "no motion"});
     }
 
-    transition(context,msg) {
+    transition(msg) {
         var instance = this;
-        instance.#info("transition() "+context);
-        if (!context) {
-            throw new Error("Context is not set!");
-        }
+        instance.#info("transition(",this._context,",",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 var open = { MotionState: require("./MotionState") };
-                return new open.MotionState(context);
+                return new open.MotionState(instance._context);
             }
         }
         return instance;

@@ -23,17 +23,14 @@ class StateMachine {
         this.#current_state.enter();
     }
 
-    transition(context,event) {
+    transition(event) {
         var instance = this;
         var state = this.#current_state;
-        instance.#info("transition(",context,",",event,") current state:",state);
+        instance.#info("transition(",event,") current state:",state);
         if (!state) {
             throw new Error("State is not set!");
         }
-        if (!context) {
-            throw new Error("Context is not set!");
-        }
-        instance.#change_state(state.transition(context,event));
+        instance.#change_state(state.transition(event));
     }
 };
 
