@@ -1,0 +1,32 @@
+BaseState = require("../BaseState");
+
+class AbsenceState extends BaseState {
+    #info;
+    name="AbsenceState";
+
+    constructor(context) {
+        super(context);
+        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('closed').extend('AbsenceState');
+        this.#info("constructor() context: "+context);
+        context.node().send({ "payload": { "state_report": { "state": "absence" }, "type": "state" } })
+        context.node().status({fill: "grey", shape: "dot", text: "absence"});
+    }
+
+    transition(context,msg) {
+        this.#info("transition() "+context);
+        if (!context) {
+            throw new Error("Context is not set!");
+        }
+        if (msg.payload.type=="motion") {
+            if (msg.payload.motion.motion_report.motion==true) {
+
+                var closed = { PresenceState: require("./PresenceState") };
+                return new closed.PresenceState(context);
+            }
+        }
+
+        return this;
+    }
+}
+
+module.exports = AbsenceState;

@@ -11,13 +11,15 @@ stateDiagram-v2
   Closed --> Open: no contact
   state Open {
     [*] --> motion_o
-    motion_o --> no_motion: motion timeout
+    motion_o --> motion_o: motion
     no_motion --> motion_o: motion
+    motion_o --> no_motion: motion timeout
   }
   state Closed {
     [*] --> motion_c
     motion_c --> absence: motion timeout
     motion_c --> presence: motion
+    absence --> presence: motion
   }
 ```
 ## Output
