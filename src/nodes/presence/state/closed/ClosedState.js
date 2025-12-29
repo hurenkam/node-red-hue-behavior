@@ -3,7 +3,6 @@ BaseState = require("../BaseState");
 class ClosedState extends BaseState {
     #info;
     #state_machine;
-    name="ClosedState";
 
     constructor(context) {
         super(context);

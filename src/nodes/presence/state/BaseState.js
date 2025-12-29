@@ -1,6 +1,5 @@
 class BaseState {
     #info;
-    name="BaseState";
     
     constructor(context) {
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('BaseState');

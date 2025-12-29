@@ -2,7 +2,6 @@ BaseState = require("../BaseState");
 
 class AbsenceState extends BaseState {
     #info;
-    name="AbsenceState";
 
     constructor(context) {
         super(context);

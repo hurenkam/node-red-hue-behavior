@@ -2,7 +2,6 @@ BaseState = require("../BaseState");
 
 class MotionState extends BaseState {
     #info;
-    name="MotionState";
 
     constructor(context) {
         super(context);

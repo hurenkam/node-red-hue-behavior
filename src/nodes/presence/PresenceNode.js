@@ -6,7 +6,6 @@ class PresenceNode {
     #config;
     #api;
     #fsm;
-    name="PresenceNode";
 
     constructor(node,config,api) {
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend(config.id);

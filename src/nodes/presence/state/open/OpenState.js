@@ -4,7 +4,6 @@ StateMachine = require("../StateMachine");
 class OpenState extends BaseState {
     #info;
     #state_machine;
-    name="OpenState";
 
     constructor(context) {
         super(context);

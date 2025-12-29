@@ -1,7 +1,6 @@
 class StateMachine {
     #info;
     #current_state;
-    name="StateMachine";
 
     constructor(initial_state) {
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('StateMachine');
@@ -10,7 +9,7 @@ class StateMachine {
             throw new Error("Initial state is not set!");
         }
         this.#current_state = initial_state;
-        //initial_state.enter();
+        initial_state.enter();
     }
 
     #change_state(state) {
@@ -19,9 +18,9 @@ class StateMachine {
         if (!state) {
             throw new Error("State is not set!");
         }
-        //this.#current_state.exit();
+        this.#current_state.exit();
         instance.#current_state = state;
-        //this.#current_state.enter();
+        this.#current_state.enter();
     }
 
     transition(context,event) {
@@ -39,85 +38,3 @@ class StateMachine {
 };
 
 module.exports = StateMachine;
-
-
-/*
-import { Machine } from 'xstate';
-
-const open_machine = Machine({
-    key: "open",
-    initial: "motion",
-    states: {
-        "motion": {
-            onEntry: ["",() => {
-                console.log("open_machine.motion.onEntry()")
-            }],
-            on: {
-                TIMEOUT: "no_motion",
-                MOTION: "motion",
-            } 
-        },
-        "no_motion": {
-            on: {
-                MOTION: "no_motion"
-            }
-        }
-    }
-});
-const closed_machine = Machine({
-    key: "closed",
-    initial: "motion",
-    states: {
-        "motion": {
-            on: {
-                TIMEOUT: "absence",
-                MOTION: "presence",
-            } 
-        },
-        "absence": {
-            on: {
-                MOTION: "presence"
-            }
-        },
-        "presence": {
-            on: {}
-        }
-    }
-});
-const presence_machine = Machine({
-    key: "presence",
-    initial: "open",
-    states: {
-        "open": {
-            on: {
-                CLOSED: "closed"
-            },
-            ...open_machine
-        },
-        "closed": {
-            on: {
-                OPEN: "closed"
-            },
-            ...closed_machine
-        }
-    }
-});
-
-class StateMachine {
-    #state;
-
-    constructor() {
-    }
-
-    transition(event) {
-        var state = presence_machine
-            .transtion(this.#state, event)
-            .value;
-        this.#state = state;
-    }
-
-    current_state() {
-        this.#state;
-    }
-}
-*/
