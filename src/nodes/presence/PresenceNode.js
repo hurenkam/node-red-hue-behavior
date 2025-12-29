@@ -1,108 +1,99 @@
-PresenceContext = require("./PresenceContext");
-AbsenceState = require("./AbsenceState");
+StateMachine = require("./state/StateMachine");
 
 class PresenceNode {
-    static nodeAPI = null;
-    #onInput;
-    #onClose;
     #info;
-    #error;
-    #trace;
-    #state;
-    #context;
-    #motion_timer;
-    #absence_timer;
+    #node;
+    #config;
+    #api;
+    #fsm;
+    name="PresenceNode";
 
-    constructor(config) {
-        PresenceNode.nodeAPI.nodes.createNode(this,config);
-        this.#info = require('debug')('hue-behavior').extend('info').extend('PresenceNode').extend(config.id);
-        this.#error = require('debug')('hue-behavior').extend('error').extend('PresenceNode').extend(config.id);
-        this.#trace = require('debug')('hue-behavior').extend('trace').extend('PresenceNode').extend(config.id);
+    constructor(node,config,api) {
+        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend(config.id);
         this.#info("constructor()");
-        this.#context = new PresenceContext(config.id,this);
-        this.#state = new AbsenceState(this.#context);
-    
+        this.#node = node;
+        this.#config = config;
+        this.#api = api;
+
+        this.init();
+    }
+
+    node() { return this.#node; }
+    config() { return this.#config; }
+    api() { return this.#api; }
+
+    init() {
         var instance = this;
+        instance.#info("init() instance: "+JSON.stringify(instance));
 
-        this.#onInput = function (msg) {
-            try {
-                instance.onInput(msg);
-            } catch (error) {
-                this.#error(error.message,error.stack);
-            }
-        }
-    
-        this.#onClose = function () {
-            try {
-                instance.destructor();
-            } catch (error) {
-                this.#error(error.message,error.stack);
-            }
-        }
-    
-        this.on('input', this.#onInput);
-        this.on('close', this.#onClose);
+        var open = { OpenState: require("./state/open/OpenState") };
+        instance.#fsm = new StateMachine(new open.OpenState(instance));
+
+        instance.#node.on('input', function (msg) {
+            instance.#input(msg,instance);
+        });
+        instance.#node.on('close', function () {
+            instance.#close();
+        });
     }
 
-    onInput(msg) {
-        this.#trace("onInput(",msg,")");
-        if (msg.payload && msg.payload.type) {
-            if (msg.payload.type=="contact") {
-                if (msg.payload.contact_report.state=="contact") {
-                    this.#state = this.#state.onClosed();
-                }
-                if (msg.payload.contact_report.state=="no_contact") {
-                    this.#state = this.#state.onOpen();
-                }
-            }
-            if (msg.payload.type=="motion") {
-                if (msg.payload.motion.motion_report.motion==true) {
-                    this.#state = this.#state.onMotion();
-                }
-            }
-        }
+    #close() {
+        this.#info("close()");
     }
 
+    #input(msg,instance) {
+        this.#info("input(",msg,")");
+        this.#fsm.transition(instance,msg);
+    }
+
+    #absence_timer;
     clear_absence_timer() {
-        this.#trace("clear_absence_timer())");
+        this.#info("clear_absence_timer())");
         if (this.#absence_timer) {
             clearTimeout(this.#absence_timer);
         }
     }
     start_absence_timer() {
-        this.#trace("start_absence_timer())");
+        this.#info("start_absence_timer())");
         this.clear_absence_timer();
         this.#absence_timer = setTimeout(() => {
             this.absence_timeout();
         }, 60000);
     }
     absence_timeout() {
-        this.#trace("absence_timeout()");
-        this.#state = this.#state.onAbsenceTimeout();
+        var instance = this;
+        this.#info("absence_timeout()");
+        this.#fsm.transition(instance,{
+            "payload": {
+                "type": "timeout",
+                "timeout": "absence"
+            }
+        });
     }
 
+    #motion_timer;
     start_motion_timer() {
-        this.#trace("start_motion_timer())");
+        this.#info("start_motion_timer())");
         this.clear_motion_timer();
         this.#motion_timer = setTimeout(() => {
             this.motion_timeout();
         }, 300000);
     }
     clear_motion_timer() {
-        this.#trace("clear_motion_timer())");
+        this.#info("clear_motion_timer())");
         if (this.#motion_timer) {
             clearTimeout(this.#motion_timer);
         }
     }
     motion_timeout() {
-        this.#trace("motion_timeout()");
-        this.#state = this.#state.onMotionTimeout();
-    }
-
-    destructor() {
-        this.#info("destructor()");
-        this.off('input',this.#onInput);
-        this.off('close',this.#onClose);
+        var instance = this;
+        this.#info("motion_timeout()");
+        this.#fsm.transition(instance,{
+            "payload": {
+                "type": "timeout",
+                "timeout": "motion"
+            }
+        });
     }
 }
 
