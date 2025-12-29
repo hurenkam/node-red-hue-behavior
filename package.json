@@ -22,7 +22,7 @@
   "node-red": {
     "version": ">=2.0.0",
     "nodes": {
-      "main": "src/main.js"
+      "presence": "src/nodes/presence/node.js"
     }
   },
   "engines": {

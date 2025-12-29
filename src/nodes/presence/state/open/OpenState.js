@@ -1,5 +1,5 @@
-BaseState = require("../BaseState");
-StateMachine = require("../StateMachine");
+BaseState = require("../../../../utils/fsm/BaseState");
+StateMachine = require("../../../../utils/fsm/StateMachine");
 
 class OpenState extends BaseState {
     #info;
@@ -10,9 +10,7 @@ class OpenState extends BaseState {
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('open').extend('OpenState');
         this.#info("constructor()"+context);
 
-        var open = {
-            MotionState: require("./MotionState"),
-        };
+        var open = { MotionState: require("./MotionState") };
         this.#state_machine = new StateMachine(new open.MotionState(context));
     }
 
@@ -25,10 +23,8 @@ class OpenState extends BaseState {
         if (msg.payload && msg.payload.type) {
             if (msg.payload.type=="contact") {
                 if (msg.payload.contact_report.state=="contact") {
-                    var closed = {
-                        ClosedState: require("../closed/ClosedState"),
-                    };
-
+                    context.motion_timer().cancel();
+                    var closed = { ClosedState: require("../closed/ClosedState") };
                     return new closed.ClosedState(context);
                 }
             }

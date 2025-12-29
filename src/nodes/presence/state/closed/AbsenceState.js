@@ -1,4 +1,4 @@
-BaseState = require("../BaseState");
+BaseState = require("../../../../utils/fsm/BaseState");
 
 class AbsenceState extends BaseState {
     #info;
