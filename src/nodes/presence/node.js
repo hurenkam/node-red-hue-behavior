@@ -52,9 +52,22 @@ class PresenceNode {
         this.#info("close()");
     }
 
+    #contact_sensors = {};
     #input(msg) {
         this.#info("input(",msg,")");
+        if (msg.payload && (msg.payload.type=='contact')) {
+            this.#contact_sensors[msg.payload.id]=msg.payload.contact_report;
+        }
         this.#fsm.transition(msg);
+    }
+
+    all_closed() {
+        for (var key in this.#contact_sensors) {
+            if (this.#contact_sensors.hasOwnProperty(key) && (this.#contact_sensors[key].state=="no_contact")) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

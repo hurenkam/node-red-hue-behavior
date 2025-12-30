@@ -11,12 +11,9 @@ couple things together.
 
 ## Status
 
-Currently only one node is available, and this is still a work in progress. The [Presence](/src/nodes/presence/design.md) node aims to combine contact and motion sensors into a more reliable `presence` signal that can be used to 
-change light states.
-Intent is that you can combine multiple contact sensors and multiple motion sensors together, but right now multiple
-contact sensors is not yet supported (you can add them, but it will not have the desired result).
+Currently only one node is available, and this is still a work in progress. The [Presence](/src/nodes/presence/design.md) node aims to combine contact and motion sensors into a more reliable `presence` signal that can be used to change light states.
 
 ## Todo
- - Multiple contact sensors support for `Presence` node
+ - ~~Multiple contact sensors support for `Presence` node~~
  - Scene cycler & dimmer to combine buttons & rotary inputs
  - Room/zone automation that combines automated and manual behavior

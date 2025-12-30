@@ -28,7 +28,7 @@ class OpenState extends BaseState {
         instance.#info("transition(",msg,")");
         if (msg.payload && msg.payload.type) {
             if (msg.payload.type=="contact") {
-                if (msg.payload.contact_report.state=="contact") {
+                if (instance.context().all_closed()) {
                     var closed = { ClosedState: require("../closed/ClosedState") };
                     return new closed.ClosedState(instance.log(),instance.context());
                 }
