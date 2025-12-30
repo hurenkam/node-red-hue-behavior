@@ -5,9 +5,9 @@ class ClosedState extends BaseState {
     #info;
     #state_machine;
 
-    constructor(context) {
-        super(context);
-        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('closed').extend('ClosedState');
+    constructor(log,context) {
+        super(log,context);
+        this.#info = log.extend('ClosedState');
         this.#info("constructor()");
     }
 
@@ -15,7 +15,7 @@ class ClosedState extends BaseState {
         this.#info("enter()");
         var instance = this;
         var closed = { MotionState: require("./MotionState") };
-        this.#state_machine = new StateMachine(new closed.MotionState(this.context()));
+        this.#state_machine = new StateMachine(instance.#info,new closed.MotionState(instance.#info,this.context()));
     }
 
     exit() {
@@ -30,7 +30,7 @@ class ClosedState extends BaseState {
             if (msg.payload.type=="contact") {
                 if (msg.payload.contact_report.state=="no_contact") {
                     var open = { OpenState: require("../open/OpenState") };
-                    return new open.OpenState(this.context());
+                    return new open.OpenState(instance.log(),instance.context());
                 }
             }
         }

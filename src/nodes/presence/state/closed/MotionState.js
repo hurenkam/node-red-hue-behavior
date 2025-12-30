@@ -3,9 +3,9 @@ BaseState = require("../../../../utils/fsm/BaseState");
 class MotionState extends BaseState {
     #info;
 
-    constructor(context) {
-        super(context);
-        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('closed').extend('MotionState');
+    constructor(log,context) {
+        super(log,context);
+        this.#info = log.extend('MotionState');
         this.#info("constructor()");
 
         context.node().send({ "payload": { "state_report": { "state": "motion_c" }, "type": "state" } })
@@ -29,14 +29,14 @@ class MotionState extends BaseState {
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 var closed = { PresenceState: require("./PresenceState") };
-                return new closed.PresenceState(instance.context());
+                return new closed.PresenceState(instance.log(),instance.context());
             }
         }
 
         if (msg.payload.type=="timeout") {
             if (msg.payload.timeout=="absence") {
                 var closed = { AbsenceState: require("./AbsenceState") };
-                return new closed.AbsenceState(instance.context());
+                return new closed.AbsenceState(instance.log(),instance.context());
             }
         }
         return instance;

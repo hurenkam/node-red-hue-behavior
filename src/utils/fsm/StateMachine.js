@@ -1,10 +1,10 @@
 class StateMachine {
-    #info;
+    #log;
     #current_state;
 
-    constructor(initial_state) {
-        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('StateMachine');
-        this.#info("constructor()");
+    constructor(log,initial_state) {
+        this.#log = log.extend('StateMachine');
+        this.#log("constructor()");
         if (!initial_state) {
             throw new Error("constructor(): Initial state is not set!");
         }
@@ -18,7 +18,7 @@ class StateMachine {
             throw new Error("change_state(): State is not set!");
         }
         if (this.#current_state != state) {
-            this.#info("change_state()  from:",this.#current_state,"to:",state);
+            this.#log("change_state()  from:",this.#current_state,"to:",state);
             this.#current_state.exit();
             instance.#current_state = state;
             this.#current_state.enter();
@@ -28,7 +28,7 @@ class StateMachine {
     transition(event) {
         var instance = this;
         var state = this.#current_state;
-        instance.#info("transition(",event,")");
+        instance.#log("transition(",event,")");
         if (!state) {
             throw new Error("transition(): State is not set!");
         }

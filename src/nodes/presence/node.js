@@ -39,7 +39,7 @@ class PresenceNode {
             instance.#close();
         });
 
-        this.#fsm = new fsm.StateMachine(new open.OpenState(instance));
+        this.#fsm = new fsm.StateMachine(this.#info, new open.OpenState(this.#info, instance));
     }
 
     node() { return this.#node; }

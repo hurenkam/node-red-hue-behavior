@@ -1,16 +1,19 @@
 class BaseState {
+    #log;
     #info;
     #context;
     
-    constructor(context) {
+    constructor(log,context) {
+        this.#log = log;
         this.#context = context;
-        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('BaseState');
+        this.#info = log.extend('BaseState');
         this.#info("constructor()");
         if (!context) {
             throw new Error("Context is not set!");
         }
     }
 
+    log() { return this.#log; }
     context() { return this.#context; }
 
     transition(event) {
