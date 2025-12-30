@@ -6,13 +6,21 @@ class PresenceState extends BaseState {
     constructor(context) {
         super(context);
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('closed').extend('PresenceState');
-        this.#info("constructor() context: "+context);
+        this.#info("constructor()");
         context.node().send({ "payload": { "state_report": { "state": "presence" }, "type": "state"  } })
         context.node().status({fill: "green", shape: "dot", text: "presence"});
     }
 
+    enter() {
+        this.#info("enter()");
+    }
+
+    exit() {
+        this.#info("exit()");
+    }
+
     transition(msg) {
-        this.#info("transition(",this.context(),",",msg,")");
+        this.#info("transition(",msg,")");
         return this;
     }
 }

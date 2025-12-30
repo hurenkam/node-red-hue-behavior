@@ -15,7 +15,7 @@ class MotionState extends BaseState {
         this.#info("enter()");
         this.context().motion_timer().start();
     }
-
+    
     exit() {
         this.#info("exit()");
         this.context().motion_timer().cancel();
@@ -23,7 +23,7 @@ class MotionState extends BaseState {
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this.context(),",",msg,")");
+        instance.#info("transition(",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 instance.context().motion_timer().start();

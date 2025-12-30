@@ -9,14 +9,23 @@ class OpenState extends BaseState {
         super(context);
         this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend('open').extend('OpenState');
         this.#info("constructor()");
+    }
 
+    enter() {
+        this.#info("enter()");
+        var instance = this;
         var open = { MotionState: require("./MotionState") };
-        this.#state_machine = new StateMachine(new open.MotionState(context));
+        this.#state_machine = new StateMachine(new open.MotionState(instance.context()));
+    }
+
+    exit() {
+        this.#info("exit()");
+        this.#state_machine.destructor();
     }
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",instance.context(),",",msg,")");
+        instance.#info("transition(",msg,")");
         if (msg.payload && msg.payload.type) {
             if (msg.payload.type=="contact") {
                 if (msg.payload.contact_report.state=="contact") {

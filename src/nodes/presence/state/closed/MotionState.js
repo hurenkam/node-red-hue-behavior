@@ -14,13 +14,18 @@ class MotionState extends BaseState {
         context.absence_timer().start();
     }
 
+    enter() {
+        this.#info("enter()");
+    }
+
     exit() {
+        this.#info("exit()");
         this.context().absence_timer().cancel();
     }
 
     transition(msg) {
         var instance = this;
-        instance.#info("transition(",this.context(),",",msg,")");
+        instance.#info("transition(",msg,")");
         if (msg.payload.type=="motion") {
             if (msg.payload.motion.motion_report.motion==true) {
                 var closed = { PresenceState: require("./PresenceState") };
