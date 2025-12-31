@@ -13,6 +13,8 @@ class PresenceNode {
         this.#node = node;
         this.#config = config;
         this.#api = api;
+
+        this.init();
     }
 
     #fsm;
@@ -71,11 +73,4 @@ class PresenceNode {
     }
 }
 
-module.exports = function(RED) {
-    function createPresenceNode(config) {
-        RED.nodes.createNode(this, config);
-        this.node = new PresenceNode(this,config,RED);
-        this.node.init();
-    }
-    RED.nodes.registerType("@hurenkam/hue-behavior/Presence", createPresenceNode);
-}
+module.exports = PresenceNode;

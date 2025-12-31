@@ -13,6 +13,21 @@
         },
         paletteLabel: "Presence",
     });
+
+    RED.nodes.registerType('@hurenkam/hue-behavior/SceneCycler',{
+        category: 'hue behavior',
+        color: '#DFDFA0',
+        defaults: {
+            name: {value:""}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-rss",
+        label: function() {
+            return this.name||"SceneCycler";
+        },
+        paletteLabel: "SceneCycler",
+    });
 </script>
 
 <script type="text/html" data-template-name="@hurenkam/hue-behavior/Presence">
@@ -28,4 +43,16 @@
         When contact sensors are closed, and motion is detected, it will trigger a 
         `presence` state, which will remain until a contact sensor indicates a door 
         has been opened again.</p>
+</script>
+
+
+<script type="text/html" data-template-name="@hurenkam/hue-behavior/SceneCycler">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="@hurenkam/hue-behavior/SceneCycler">
+    <p>todo.</p>
 </script>
