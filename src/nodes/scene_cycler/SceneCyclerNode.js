@@ -10,23 +10,41 @@ class SceneCyclerNode extends BaseNode {
         this.#info = info;
     }
 
-    connections(wires) {
-        var instance = this;
-        wires.forEach(output => {
+    #connected_ids=[];
+    #connected_ids_by_type={};
+    #connected_nodes_by_id={};
+    find_connected_nodes() {
+        this.#info("find_connected_nodes()");
+
+        var instance=this;
+        var connected_ids = [];
+        this.node().wires.forEach(output => {
             output.forEach(id => {
-                this.#info("connections() id:",id);
-                var node = instance.getNodeById(id);
-                if ((node) && (node.type=="@hurenkam/hue-services/SceneNode") && (node.uuid)) {
-                    this.#info("connections() scene:",node.uuid);
-                }
+                connected_ids.push(id);
             });
         });
+        this.#connected_ids=connected_ids;
+
+        var connected_nodes_by_id = {};
+        var connected_ids_by_type = {};
+        this.api().nodes.eachNode(function(node) {
+            if (connected_ids.indexOf(node.id) != -1) {
+                if (!connected_ids_by_type[node.type]) {
+                    connected_ids_by_type[node.type]=[];
+                }
+                instance.#info("find_connected_nodes() found:",node);
+                connected_ids_by_type[node.type].push(node.id);
+                connected_nodes_by_id[node.id]=node;
+            }
+        });
+        this.#connected_ids_by_type = connected_ids_by_type;
+        this.#connected_nodes_by_id = connected_nodes_by_id;
     }
 
     init() {
         this.#info("init()");
-        this.connections(this.node().wires);
         super.init();
+        this.find_connected_nodes();
     }
 
     destructor() {

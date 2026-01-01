@@ -6,7 +6,6 @@ class BaseNode {
     constructor(node, config, api) {
         this.#node = node;
         this.#config = config;
-        this.config = config;
         this.#api = api;
 
         var instance = this;
