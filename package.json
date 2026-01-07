@@ -1,5 +1,5 @@
 {
-  "name": "@hurenkam/hue-behavior",
+  "name": "@hurenkam/node-red-hue-behavior",
   "version": "0.0.1",
   "description": "Custom node-red nodes for interfacing with services from hue-services package",
   "author": "Mark Hurenkamp",
@@ -29,7 +29,8 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "debug": "^4.3.4"
+    "debug": "^4.4.3",
+    "@hurenkam/npm-utils": "0.0.1"
   },
   "publishConfig": {
     "access": "public"

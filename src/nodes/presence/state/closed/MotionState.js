@@ -1,6 +1,6 @@
-BaseState = require("../../../../utils/fsm/BaseState");
+const utils = require("@hurenkam/npm-utils");
 
-class MotionState extends BaseState {
+class MotionState extends utils.fsm.BaseState {
     #info;
 
     constructor(log,context) {
@@ -10,12 +10,11 @@ class MotionState extends BaseState {
 
         context.node().send({ "payload": { "state_report": { "state": "motion_c" }, "type": "state" } })
         context.node().status({fill: "blue", shape: "dot", text: "motion_c"});
-
-        context.absence_timer().start();
     }
 
     enter() {
         this.#info("enter()");
+        this.context().absence_timer().start();
     }
 
     exit() {

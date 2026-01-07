@@ -8,13 +8,11 @@ class PresenceNode {
     #api;
 
     constructor(node,config,api) {
-        this.#info = require('debug')('info').extend('hue-behavior').extend('PresenceNode').extend(config.id);
+        this.#info = require('debug')('info').extend('node-red-hue-behavior').extend('PresenceNode').extend(config.id);
         this.#info("constructor()");
         this.#node = node;
         this.#config = config;
         this.#api = api;
-
-        this.init();
     }
 
     #fsm;
@@ -24,8 +22,7 @@ class PresenceNode {
         this.#info("init()");
 
         var instance = this;
-        var utils = { Timer: require("../../utils/Timer") }
-        var fsm = { StateMachine: require("../../utils/fsm/StateMachine") };
+        var utils = require("@hurenkam/npm-utils");
         var open = { OpenState: require("./state/open/OpenState") };
 
         this.#motion_timer = new utils.Timer(300000,() => { 
@@ -41,7 +38,7 @@ class PresenceNode {
             instance.#close();
         });
 
-        this.#fsm = new fsm.StateMachine(this.#info, new open.OpenState(this.#info, instance));
+        this.#fsm = new utils.fsm.StateMachine(this.#info, new open.OpenState(this.#info, instance));
     }
 
     node() { return this.#node; }

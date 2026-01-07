@@ -1,6 +1,6 @@
-BaseState = require("../../../../utils/fsm/BaseState");
+const utils = require("@hurenkam/npm-utils");
 
-class PresenceState extends BaseState {
+class PresenceState extends utils.fsm.BaseState {
     #info;
 
     constructor(log,context) {

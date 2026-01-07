@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('@hurenkam/hue-behavior/Presence',{
+    RED.nodes.registerType('@hurenkam/node-red-hue-behavior/Presence',{
         category: 'hue behavior',
         color: '#DFA0DF',
         defaults: {
@@ -14,7 +14,7 @@
         paletteLabel: "Presence",
     });
 
-    RED.nodes.registerType('@hurenkam/hue-behavior/SceneCycler',{
+    RED.nodes.registerType('@hurenkam/node-red-hue-behavior/SceneCycler',{
         category: 'hue behavior',
         color: '#DFDFA0',
         defaults: {
@@ -30,14 +30,14 @@
     });
 </script>
 
-<script type="text/html" data-template-name="@hurenkam/hue-behavior/Presence">
+<script type="text/html" data-template-name="@hurenkam/node-red-hue-behavior/Presence">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-help-name="@hurenkam/hue-behavior/Presence">
+<script type="text/html" data-help-name="@hurenkam/node-red-hue-behavior/Presence">
     <p>This node can be used to combine multiple contact sensors and motion sensors 
         to provide a more stable presence sensor.
         When contact sensors are closed, and motion is detected, it will trigger a 
@@ -46,13 +46,13 @@
 </script>
 
 
-<script type="text/html" data-template-name="@hurenkam/hue-behavior/SceneCycler">
+<script type="text/html" data-template-name="@hurenkam/node-red-hue-behavior/SceneCycler">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-help-name="@hurenkam/hue-behavior/SceneCycler">
+<script type="text/html" data-help-name="@hurenkam/node-red-hue-behavior/SceneCycler">
     <p>todo.</p>
 </script>

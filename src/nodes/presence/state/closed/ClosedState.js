@@ -1,7 +1,6 @@
-BaseState = require("../../../../utils/fsm/BaseState");
-StateMachine = require("../../../../utils/fsm/StateMachine");
+const utils = require("@hurenkam/npm-utils");
 
-class ClosedState extends BaseState {
+class ClosedState extends utils.fsm.BaseState {
     #info;
     #state_machine;
 
@@ -15,7 +14,7 @@ class ClosedState extends BaseState {
         this.#info("enter()");
         var instance = this;
         var closed = { MotionState: require("./MotionState") };
-        this.#state_machine = new StateMachine(instance.#info,new closed.MotionState(instance.#info,this.context()));
+        this.#state_machine = new utils.fsm.StateMachine(instance.#info,new closed.MotionState(instance.#info,this.context()));
     }
 
     exit() {

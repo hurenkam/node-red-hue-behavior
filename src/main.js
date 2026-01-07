@@ -7,7 +7,7 @@ module.exports = function(RED) {
     };
 
     Object.keys(nodes).forEach((id) => {
-        var typeName = "@hurenkam/hue-behavior/"+id;
+        var typeName = "@hurenkam/node-red-hue-behavior/"+id;
         var create_node = function(config) {
             RED.nodes.createNode(this, config);
             const node = require(nodes[id]);
